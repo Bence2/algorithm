@@ -47,8 +47,14 @@ public class DirectedGraph<T> {
 		edgeArray[10][1] = "ArtificialIntelligence";
 		
 		edgeArray[11][0] = "ArtificialIntelligence";
-		edgeArray[11][1] = "MachineLearning";
-//		edgeArray[11][1] = "LinearAlgebra";
+		edgeArray[11][1] = "Robotics"; // DAG
+//		edgeArray[11][1] = "LinearAlgebra";  // nem DAG
+		
+		edgeArray[12][0] = "Robotics";
+		edgeArray[12][1] = "Calculus"; // DAG
+		
+		edgeArray[13][0] = "Calculus";
+		edgeArray[13][1] = "LinearAlgebra"; // DAG
 		
 		// erre meg teszteseteket irni
 		

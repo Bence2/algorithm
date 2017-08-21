@@ -11,7 +11,11 @@ public class DirectedGraphProcessingUtil {
 
 	}
 	
-	public static <T> boolean hasCycle(DirectedGraph<T> diGraph) {
+	public static <T> Iterable<T> hasCycle(DirectedGraph<T> diGraph) {
+		
+		// nem csak eszre kene venni a cycle-t, hanem vissza is adni
+		// kene egy topological sortot is nyomni
+		
 		Map<T, Boolean> isMarked = new HashMap<>();
 		initBooleanValueMap(diGraph.getVertices(), isMarked);
 		Map<T, T> edgeTo = new HashMap<>();
@@ -27,26 +31,44 @@ public class DirectedGraphProcessingUtil {
 				verticesToBeDiscovered.push(vertex);
 				
 				isMarked.put(vertex, true);
-				isPoppedFromStack.put(vertex, true);
+//				isPoppedFromStack.put(vertex, true);
 				
 				while (!verticesToBeDiscovered.isEmpty()) {
 					T currentVertex = verticesToBeDiscovered.pop();
-					isPoppedFromStack.put(vertex, true);
+					isPoppedFromStack.put(currentVertex, true);
 					
 					for (T adjacentVertex : diGraph.getAdjacentVertices(currentVertex)) {
+						edgeTo.put(adjacentVertex, currentVertex);
 						if (isPoppedFromStack.get(adjacentVertex)) {
-							return true;
+							return getCycle(edgeTo, adjacentVertex);
 						} else {
 							isMarked.put(adjacentVertex, true);
 							verticesToBeDiscovered.push(adjacentVertex);
-							edgeTo.put(adjacentVertex, currentVertex);
 						}
 					}
 				}
 			}
 		}
 		
-		return false;
+		return null;
+	}
+	
+	
+	private static <T> Iterable<T> getCycle(Map<T, T> parentLink, T lastVertex) {
+		Stack<T> cycle = new Stack<>();
+//		for (int i = 0; i < array.length; i++) {
+//		}
+//		for (T currentVertex = lastVertex; lastVertex != currentVertex; currentVertex = parentLink.get(currentVertex)) {
+//			cycle.push(currentVertex);
+//		}
+		T currentVertex = parentLink.get(lastVertex);
+		while (lastVertex != currentVertex) {
+			cycle.push(currentVertex);
+			currentVertex = parentLink.get(currentVertex);
+		}
+		cycle.push(lastVertex);
+		
+		return cycle;
 	}
 	
 	private static <T> void initBooleanValueMap(Iterable<T> keySet, Map<T, Boolean> map) {
