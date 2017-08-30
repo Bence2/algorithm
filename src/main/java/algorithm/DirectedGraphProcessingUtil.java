@@ -11,6 +11,21 @@ public class DirectedGraphProcessingUtil {
 
 	}
 	
+	public static <T> Iterable<T> topologicalOrdering(DirectedGraph<T> diGraph) {
+		// a symbol tableben a graph keyekhez csak a kimeno elek vannak meg
+		// kell egy, amiben a bejovo elek is megvannak
+	}
+	
+	private static <T> DirectedGraph<T> reverseDiGraph(DirectedGraph<T> diGraph) {
+		DirectedGraph<T> reversedDiGrap = new DirectedGraph<>();
+		for (T keyVertex : diGraph.getVertices()) {
+			for (T adjacentVertex : diGraph.getAdjacentVertices(keyVertex)) {
+				reversedDiGrap.addEdge(adjacentVertex, keyVertex);
+			}
+		}
+		return reversedDiGrap;
+	}
+	
 	public static <T> Iterable<T> hasCycle(DirectedGraph<T> diGraph) {
 		
 		// nem csak eszre kene venni a cycle-t, hanem vissza is adni

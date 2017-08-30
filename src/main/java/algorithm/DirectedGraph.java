@@ -68,6 +68,8 @@ public class DirectedGraph<T> {
 		return adjacencyMap.keySet();
 	}
 	
+	public DirectedGraph() {}
+	
 	public DirectedGraph(T[][] edgeArray) {
 		//
 		for (T[] edgePair : edgeArray) {
