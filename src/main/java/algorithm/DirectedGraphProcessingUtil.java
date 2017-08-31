@@ -1,8 +1,8 @@
 package algorithm;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import com.google.common.collect.Iterables;
+
+import java.util.*;
 
 public class DirectedGraphProcessingUtil {
 
@@ -14,7 +14,25 @@ public class DirectedGraphProcessingUtil {
 	public static <T> Iterable<T> topologicalOrdering(DirectedGraph<T> diGraph) {
 		// a symbol tableben a graph keyekhez csak a kimeno elek vannak meg
 		// kell egy, amiben a bejovo elek is megvannak
+        DirectedGraph<T> reversedDiGraph = reverseDiGraph(diGraph);
+        Queue<T> vertexToBeVisited = new LinkedList<>();
+        vertexToBeVisited.add(getSinkVertex(reversedDiGraph));
+        while (!vertexToBeVisited.isEmpty()) {
+
+        }
+
 	}
+
+	private static <T> T getSinkVertex(DirectedGraph<T> reversedDiGraph) {
+	    T vertexToBeReturned = null;
+	    for (T vertex : reversedDiGraph.getVertices()) {
+	        if (Iterables.isEmpty(reversedDiGraph.getAdjacentVertices(vertex))) {
+	            vertexToBeReturned = vertex;
+	            break;
+            }
+        };
+	    return vertexToBeReturned;
+    }
 	
 	private static <T> DirectedGraph<T> reverseDiGraph(DirectedGraph<T> diGraph) {
 		DirectedGraph<T> reversedDiGrap = new DirectedGraph<>();
