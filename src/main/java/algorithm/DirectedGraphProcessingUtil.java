@@ -14,24 +14,33 @@ public class DirectedGraphProcessingUtil {
 	public static <T> Iterable<T> topologicalOrdering(DirectedGraph<T> diGraph) {
 		// a symbol tableben a graph keyekhez csak a kimeno elek vannak meg
 		// kell egy, amiben a bejovo elek is megvannak
+		Stack<T> topologicalOrder = new Stack<>();
         DirectedGraph<T> reversedDiGraph = reverseDiGraph(diGraph);
         Queue<T> vertexToBeVisited = new LinkedList<>();
-        vertexToBeVisited.add(getSinkVertex(reversedDiGraph));
+        vertexToBeVisited.addAll(getSinkVertices(reversedDiGraph));
+        int topologicalCounter = 0;
         while (!vertexToBeVisited.isEmpty()) {
-
+        	Queue<T> newVertexToBeVisited = new LinkedList<>();
+			for (T vertex : vertexToBeVisited) {
+				for (T incomingEdgeVertex: diGraph.getAdjacentVertices(vertex)) {
+					newVertexToBeVisited.add(incomingEdgeVertex);
+					topologicalOrder.push(incomingEdgeVertex);
+					topologicalCounter++;
+				}
+			}
+			vertexToBeVisited = newVertexToBeVisited;
         }
-
+        return topologicalOrder;
 	}
 
-	private static <T> T getSinkVertex(DirectedGraph<T> reversedDiGraph) {
-	    T vertexToBeReturned = null;
+	private static <T> List<T> getSinkVertices(DirectedGraph<T> reversedDiGraph) {
+	    List<T> verticesToBeReturned = null;
 	    for (T vertex : reversedDiGraph.getVertices()) {
 	        if (Iterables.isEmpty(reversedDiGraph.getAdjacentVertices(vertex))) {
-	            vertexToBeReturned = vertex;
-	            break;
+	            verticesToBeReturned.add(vertex);
             }
         };
-	    return vertexToBeReturned;
+	    return verticesToBeReturned;
     }
 	
 	private static <T> DirectedGraph<T> reverseDiGraph(DirectedGraph<T> diGraph) {
